@@ -46,7 +46,14 @@ export const MusicKey = ({ note, frequency, keyBinding, color, label }: MusicKey
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === keyBinding.toLowerCase() && !isPressed) {
+      // Don't trigger if user is typing in an input field
+      const target = e.target as HTMLElement;
+      const isTyping = 
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable;
+      
+      if (!isTyping && e.key.toLowerCase() === keyBinding.toLowerCase() && !isPressed) {
         playSound();
       }
     };
