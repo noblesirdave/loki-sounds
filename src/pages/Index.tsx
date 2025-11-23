@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { MusicKey, WaveformType } from "@/components/MusicKey";
+import { MusicKey } from "@/components/MusicKey";
 import { ModeIndicator } from "@/components/ModeIndicator";
-import { InstrumentSelector, InstrumentType } from "@/components/InstrumentSelector";
+import { InstrumentSelector } from "@/components/InstrumentSelector";
+import { instruments } from "@/lib/instruments";
 
 const Index = () => {
-  const [waveform, setWaveform] = useState<WaveformType>("sine");
+  const [selectedInstrument, setSelectedInstrument] = useState("piano");
+
   const leftHandKeys = [
     { note: "C", frequency: 261.63, key: "a", color: "--key-1", label: "Pinky L" },
     { note: "D", frequency: 293.66, key: "s", color: "--key-2", label: "Ring L" },
@@ -20,6 +22,8 @@ const Index = () => {
     { note: "D2", frequency: 587.33, key: "l", color: "--key-9", label: "Ring R" },
     { note: "E2", frequency: 659.25, key: ";", color: "--key-10", label: "Pinky R" },
   ];
+
+  const currentInstrument = instruments[selectedInstrument];
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
@@ -37,10 +41,17 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex items-center justify-center">
             <ModeIndicator />
-            <InstrumentSelector selected={waveform} onSelect={setWaveform} />
           </div>
+        </div>
+
+        <InstrumentSelector selected={selectedInstrument} onSelect={setSelectedInstrument} />
+
+        <div className="text-center">
+          <p className="text-accent text-sm font-mono">
+            Now Playing: {currentInstrument.name} ({currentInstrument.category})
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -57,7 +68,7 @@ const Index = () => {
                   keyBinding={key.key}
                   color={key.color}
                   label={key.label}
-                  waveform={waveform}
+                  instrument={currentInstrument}
                 />
               ))}
             </div>
@@ -76,7 +87,7 @@ const Index = () => {
                   keyBinding={key.key}
                   color={key.color}
                   label={key.label}
-                  waveform={waveform}
+                  instrument={currentInstrument}
                 />
               ))}
             </div>
@@ -86,7 +97,7 @@ const Index = () => {
         <div className="text-center space-y-2 pt-8">
           <div className="inline-block px-4 py-2 rounded-lg bg-card/50 backdrop-blur-sm border border-border/50">
             <p className="text-xs text-muted-foreground font-mono">
-              Web Audio API • Reactive UI • Keyboard & Touch Input
+              16 Instruments • Web Audio Synthesis • ADSR Envelopes
             </p>
           </div>
         </div>
