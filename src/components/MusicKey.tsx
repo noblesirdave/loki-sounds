@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-
-export type WaveformType = "sine" | "square" | "sawtooth" | "triangle";
+import { InstrumentConfig } from "@/lib/instruments";
 
 interface MusicKeyProps {
   note: string;
@@ -9,10 +8,10 @@ interface MusicKeyProps {
   keyBinding: string;
   color: string;
   label: string;
-  waveform: WaveformType;
+  instrument: InstrumentConfig;
 }
 
-export const MusicKey = ({ note, frequency, keyBinding, color, label, waveform }: MusicKeyProps) => {
+export const MusicKey = ({ note, frequency, keyBinding, color, label, instrument }: MusicKeyProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
 
@@ -28,20 +27,43 @@ export const MusicKey = ({ note, frequency, keyBinding, color, label, waveform }
   const playSound = () => {
     if (!audioContext) return;
 
+    const now = audioContext.currentTime;
+    
+    // Create oscillator
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
+    const filter = audioContext.createBiquadFilter();
 
-    oscillator.connect(gainNode);
+    // Configure oscillator
+    oscillator.frequency.value = frequency;
+    oscillator.type = instrument.waveform;
+
+    // Configure filter if specified
+    if (instrument.filterFreq) {
+      filter.type = "lowpass";
+      filter.frequency.value = instrument.filterFreq;
+      filter.Q.value = instrument.filterQ || 1;
+      oscillator.connect(filter);
+      filter.connect(gainNode);
+    } else {
+      oscillator.connect(gainNode);
+    }
+
     gainNode.connect(audioContext.destination);
 
-    oscillator.frequency.value = frequency;
-    oscillator.type = waveform;
+    // ADSR Envelope
+    const { attack, decay, sustain, release } = instrument;
+    const sustainLevel = sustain * 0.3; // Max volume 0.3
+    const totalDuration = attack + decay + 0.3 + release; // 0.3s sustain time
 
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.linearRampToValueAtTime(0.3, now + attack);
+    gainNode.gain.linearRampToValueAtTime(sustainLevel, now + attack + decay);
+    gainNode.gain.setValueAtTime(sustainLevel, now + attack + decay + 0.3);
+    gainNode.gain.linearRampToValueAtTime(0.01, now + totalDuration);
 
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
+    oscillator.start(now);
+    oscillator.stop(now + totalDuration);
 
     setIsPressed(true);
     setTimeout(() => setIsPressed(false), 150);
@@ -63,7 +85,7 @@ export const MusicKey = ({ note, frequency, keyBinding, color, label, waveform }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [keyBinding, isPressed]);
+  }, [keyBinding, isPressed, instrument]);
 
   return (
     <button

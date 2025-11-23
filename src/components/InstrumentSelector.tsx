@@ -1,37 +1,44 @@
-import { Music, Music2, Music3, Music4 } from "lucide-react";
-
-export type InstrumentType = "sine" | "square" | "sawtooth" | "triangle";
+import { instruments, instrumentCategories } from "@/lib/instruments";
+import { Music } from "lucide-react";
 
 interface InstrumentSelectorProps {
-  selected: InstrumentType;
-  onSelect: (instrument: InstrumentType) => void;
+  selected: string;
+  onSelect: (instrument: string) => void;
 }
-
-const instruments: { type: InstrumentType; label: string; icon: any }[] = [
-  { type: "sine", label: "Sine", icon: Music },
-  { type: "square", label: "Square", icon: Music2 },
-  { type: "sawtooth", label: "Sawtooth", icon: Music3 },
-  { type: "triangle", label: "Triangle", icon: Music4 },
-];
 
 export const InstrumentSelector = ({ selected, onSelect }: InstrumentSelectorProps) => {
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm text-muted-foreground font-mono mr-2">Waveform:</span>
-      <div className="flex gap-2">
-        {instruments.map(({ type, label, icon: Icon }) => (
-          <button
-            key={type}
-            onClick={() => onSelect(type)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-200 ${
-              selected === type
-                ? "bg-accent/20 border-accent text-accent-foreground scale-105"
-                : "bg-card/50 border-border/50 text-muted-foreground hover:bg-card hover:border-border hover:scale-105"
-            }`}
-          >
-            <Icon className="w-4 h-4" />
-            <span className="text-sm font-mono">{label}</span>
-          </button>
+    <div className="w-full space-y-4">
+      <div className="flex items-center gap-2 justify-center">
+        <Music className="w-5 h-5 text-primary" />
+        <span className="text-sm text-muted-foreground font-mono">Instrument</span>
+      </div>
+      
+      <div className="space-y-6">
+        {instrumentCategories.map((category) => (
+          <div key={category.name} className="space-y-2">
+            <h3 className="text-xs uppercase tracking-widest text-muted-foreground/60 font-mono text-center">
+              {category.name}
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+              {category.instruments.map((instKey) => {
+                const inst = instruments[instKey];
+                return (
+                  <button
+                    key={instKey}
+                    onClick={() => onSelect(instKey)}
+                    className={`px-3 py-2 rounded-lg border transition-all duration-200 text-sm font-mono ${
+                      selected === instKey
+                        ? "bg-primary/20 border-primary text-primary scale-105 shadow-lg"
+                        : "bg-card/50 border-border/50 text-muted-foreground hover:bg-card hover:border-border hover:scale-102"
+                    }`}
+                  >
+                    {inst.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         ))}
       </div>
     </div>
