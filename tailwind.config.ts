@@ -47,15 +47,17 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        key: {
+          1: "hsl(var(--key-1))",
+          2: "hsl(var(--key-2))",
+          3: "hsl(var(--key-3))",
+          4: "hsl(var(--key-4))",
+          5: "hsl(var(--key-5))",
+          6: "hsl(var(--key-6))",
+          7: "hsl(var(--key-7))",
+          8: "hsl(var(--key-8))",
+          9: "hsl(var(--key-9))",
+          10: "hsl(var(--key-10))",
         },
       },
       borderRadius: {
@@ -80,10 +82,31 @@ export default {
             height: "0",
           },
         },
+        "pulse-glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px currentColor, 0 0 40px currentColor",
+          },
+          "50%": {
+            boxShadow: "0 0 30px currentColor, 0 0 60px currentColor",
+          },
+        },
+        "key-press": {
+          "0%": {
+            transform: "scale(1)",
+          },
+          "50%": {
+            transform: "scale(0.95)",
+          },
+          "100%": {
+            transform: "scale(1)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 0.5s ease-in-out",
+        "key-press": "key-press 0.15s ease-out",
       },
     },
   },
