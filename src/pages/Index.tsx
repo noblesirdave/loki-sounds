@@ -1,6 +1,10 @@
-import { MusicKey } from "@/components/MusicKey";
+import { useState } from "react";
+import { MusicKey, WaveformType } from "@/components/MusicKey";
+import { ModeIndicator } from "@/components/ModeIndicator";
+import { InstrumentSelector, InstrumentType } from "@/components/InstrumentSelector";
 
 const Index = () => {
+  const [waveform, setWaveform] = useState<WaveformType>("sine");
   const leftHandKeys = [
     { note: "C", frequency: 261.63, key: "a", color: "--key-1", label: "Pinky L" },
     { note: "D", frequency: 293.66, key: "s", color: "--key-2", label: "Ring L" },
@@ -20,16 +24,23 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
       <div className="max-w-7xl w-full space-y-12">
-        <div className="text-center space-y-4">
-          <h1 className="text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-            DECA
-          </h1>
-          <p className="text-muted-foreground text-lg tracking-wide">
-            10-Key Musical Device • One key per finger
-          </p>
-          <p className="text-sm text-muted-foreground/60 font-mono">
-            Press keys A-S-D-F-G and H-J-K-L-; or click to play
-          </p>
+        <div className="text-center space-y-6">
+          <div className="space-y-4">
+            <h1 className="text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              DECA
+            </h1>
+            <p className="text-muted-foreground text-lg tracking-wide">
+              10-Key Musical Device • One key per finger
+            </p>
+            <p className="text-sm text-muted-foreground/60 font-mono">
+              Press keys A-S-D-F-G and H-J-K-L-; or click to play
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <ModeIndicator />
+            <InstrumentSelector selected={waveform} onSelect={setWaveform} />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -46,6 +57,7 @@ const Index = () => {
                   keyBinding={key.key}
                   color={key.color}
                   label={key.label}
+                  waveform={waveform}
                 />
               ))}
             </div>
@@ -64,6 +76,7 @@ const Index = () => {
                   keyBinding={key.key}
                   color={key.color}
                   label={key.label}
+                  waveform={waveform}
                 />
               ))}
             </div>

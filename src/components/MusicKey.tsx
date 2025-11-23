@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
+export type WaveformType = "sine" | "square" | "sawtooth" | "triangle";
+
 interface MusicKeyProps {
   note: string;
   frequency: number;
   keyBinding: string;
   color: string;
   label: string;
+  waveform: WaveformType;
 }
 
-export const MusicKey = ({ note, frequency, keyBinding, color, label }: MusicKeyProps) => {
+export const MusicKey = ({ note, frequency, keyBinding, color, label, waveform }: MusicKeyProps) => {
   const [isPressed, setIsPressed] = useState(false);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
 
@@ -32,7 +35,7 @@ export const MusicKey = ({ note, frequency, keyBinding, color, label }: MusicKey
     gainNode.connect(audioContext.destination);
 
     oscillator.frequency.value = frequency;
-    oscillator.type = "sine";
+    oscillator.type = waveform;
 
     gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
