@@ -33,7 +33,7 @@ const Index = () => {
               DECA
             </h1>
             <p className="text-muted-foreground text-lg tracking-wide">
-              10-Key Musical Device • One key per finger
+              Create Your Music
             </p>
             <p className="text-sm text-muted-foreground/60 font-mono">
               Press keys A-S-D-F and H-J-K-L or click to play
