@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MusicKey } from "@/components/MusicKey";
 import { ModeIndicator } from "@/components/ModeIndicator";
 import { InstrumentSelector } from "@/components/InstrumentSelector";
+import { Sequencer } from "@/components/Sequencer";
 import { instruments } from "@/lib/instruments";
 
 const Index = () => {
@@ -41,18 +42,13 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center gap-6 flex-wrap">
+            <InstrumentSelector selected={selectedInstrument} onSelect={setSelectedInstrument} />
             <ModeIndicator />
           </div>
         </div>
 
-        <InstrumentSelector selected={selectedInstrument} onSelect={setSelectedInstrument} />
-
-        <div className="text-center">
-          <p className="text-accent text-sm font-mono">
-            Now Playing: {currentInstrument.name} ({currentInstrument.category})
-          </p>
-        </div>
+        <Sequencer instrument={currentInstrument} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="space-y-4">

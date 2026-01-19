@@ -65,6 +65,11 @@ export const MusicKey = ({ note, frequency, keyBinding, color, label, instrument
     oscillator.start(now);
     oscillator.stop(now + totalDuration);
 
+    // Record note if sequencer is recording
+    if (typeof window !== 'undefined' && (window as any).__sequencerRecordNote) {
+      (window as any).__sequencerRecordNote(frequency, note);
+    }
+
     setIsPressed(true);
     setTimeout(() => setIsPressed(false), 150);
   };
