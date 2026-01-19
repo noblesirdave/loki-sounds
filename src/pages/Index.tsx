@@ -4,33 +4,65 @@ import { ModeIndicator } from "@/components/ModeIndicator";
 import { InstrumentSelector } from "@/components/InstrumentSelector";
 import { Sequencer } from "@/components/Sequencer";
 import { instruments } from "@/lib/instruments";
-
 const Index = () => {
   const [selectedInstrument, setSelectedInstrument] = useState("piano");
-
-  const leftHandKeys = [
-    { note: "Do", frequency: 261.63, key: "a", color: "--key-1", label: "C" },
-    { note: "Re", frequency: 293.66, key: "s", color: "--key-2", label: "D" },
-    { note: "Mi", frequency: 329.63, key: "d", color: "--key-3", label: "E" },
-    { note: "Fa", frequency: 349.23, key: "f", color: "--key-4", label: "F" },
-  ];
-
-  const rightHandKeys = [
-    { note: "So", frequency: 392.0, key: "h", color: "--key-5", label: "G" },
-    { note: "La", frequency: 440.0, key: "j", color: "--key-6", label: "A" },
-    { note: "Ti", frequency: 493.88, key: "k", color: "--key-7", label: "B" },
-    { note: "Do", frequency: 523.25, key: "l", color: "--key-8", label: "C" },
-  ];
-
+  const leftHandKeys = [{
+    note: "Do",
+    frequency: 261.63,
+    key: "a",
+    color: "--key-1",
+    label: "C"
+  }, {
+    note: "Re",
+    frequency: 293.66,
+    key: "s",
+    color: "--key-2",
+    label: "D"
+  }, {
+    note: "Mi",
+    frequency: 329.63,
+    key: "d",
+    color: "--key-3",
+    label: "E"
+  }, {
+    note: "Fa",
+    frequency: 349.23,
+    key: "f",
+    color: "--key-4",
+    label: "F"
+  }];
+  const rightHandKeys = [{
+    note: "So",
+    frequency: 392.0,
+    key: "h",
+    color: "--key-5",
+    label: "G"
+  }, {
+    note: "La",
+    frequency: 440.0,
+    key: "j",
+    color: "--key-6",
+    label: "A"
+  }, {
+    note: "Ti",
+    frequency: 493.88,
+    key: "k",
+    color: "--key-7",
+    label: "B"
+  }, {
+    note: "Do",
+    frequency: 523.25,
+    key: "l",
+    color: "--key-8",
+    label: "C"
+  }];
   const currentInstrument = instruments[selectedInstrument];
-
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-8">
+  return <div className="min-h-screen flex flex-col items-center justify-center p-8">
       <div className="max-w-7xl w-full space-y-12">
         <div className="text-center space-y-6">
           <div className="space-y-4">
             <h1 className="text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              DECA
+              ​Loki Sounds 
             </h1>
             <p className="text-muted-foreground text-lg tracking-wide">
               Create Your Music
@@ -54,17 +86,7 @@ const Index = () => {
               LEFT HAND
             </h2>
             <div className="grid grid-cols-4 gap-3">
-              {leftHandKeys.map((key) => (
-                <MusicKey
-                  key={key.key}
-                  note={key.note}
-                  frequency={key.frequency}
-                  keyBinding={key.key}
-                  color={key.color}
-                  label={key.label}
-                  instrument={currentInstrument}
-                />
-              ))}
+              {leftHandKeys.map(key => <MusicKey key={key.key} note={key.note} frequency={key.frequency} keyBinding={key.key} color={key.color} label={key.label} instrument={currentInstrument} />)}
             </div>
           </div>
 
@@ -73,17 +95,7 @@ const Index = () => {
               RIGHT HAND
             </h2>
             <div className="grid grid-cols-4 gap-3">
-              {rightHandKeys.map((key) => (
-                <MusicKey
-                  key={key.key}
-                  note={key.note}
-                  frequency={key.frequency}
-                  keyBinding={key.key}
-                  color={key.color}
-                  label={key.label}
-                  instrument={currentInstrument}
-                />
-              ))}
+              {rightHandKeys.map(key => <MusicKey key={key.key} note={key.note} frequency={key.frequency} keyBinding={key.key} color={key.color} label={key.label} instrument={currentInstrument} />)}
             </div>
           </div>
         </div>
@@ -96,8 +108,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
