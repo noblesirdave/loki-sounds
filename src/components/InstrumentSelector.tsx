@@ -1,5 +1,14 @@
 import { instruments, instrumentCategories } from "@/lib/instruments";
 import { Music } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface InstrumentSelectorProps {
   selected: string;
@@ -8,39 +17,30 @@ interface InstrumentSelectorProps {
 
 export const InstrumentSelector = ({ selected, onSelect }: InstrumentSelectorProps) => {
   return (
-    <div className="w-full space-y-4">
-      <div className="flex items-center gap-2 justify-center">
-        <Music className="w-5 h-5 text-primary" />
-        <span className="text-sm text-muted-foreground font-mono">Instrument</span>
-      </div>
-      
-      <div className="space-y-6">
-        {instrumentCategories.map((category) => (
-          <div key={category.name} className="space-y-2">
-            <h3 className="text-xs uppercase tracking-widest text-muted-foreground/60 font-mono text-center">
-              {category.name}
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+    <div className="flex items-center gap-3">
+      <Music className="w-4 h-4 text-primary" />
+      <Select value={selected} onValueChange={onSelect}>
+        <SelectTrigger className="w-48 bg-card border-border">
+          <SelectValue placeholder="Select instrument" />
+        </SelectTrigger>
+        <SelectContent className="bg-card border-border">
+          {instrumentCategories.map((category) => (
+            <SelectGroup key={category.name}>
+              <SelectLabel className="text-xs uppercase tracking-widest text-muted-foreground/60 font-mono">
+                {category.name}
+              </SelectLabel>
               {category.instruments.map((instKey) => {
                 const inst = instruments[instKey];
                 return (
-                  <button
-                    key={instKey}
-                    onClick={() => onSelect(instKey)}
-                    className={`px-3 py-2 rounded-lg border transition-all duration-200 text-sm font-mono ${
-                      selected === instKey
-                        ? "bg-primary/20 border-primary text-primary scale-105 shadow-lg"
-                        : "bg-card/50 border-border/50 text-muted-foreground hover:bg-card hover:border-border hover:scale-102"
-                    }`}
-                  >
+                  <SelectItem key={instKey} value={instKey} className="font-mono">
                     {inst.name}
-                  </button>
+                  </SelectItem>
                 );
               })}
-            </div>
-          </div>
-        ))}
-      </div>
+            </SelectGroup>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };
